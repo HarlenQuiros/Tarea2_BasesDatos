@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Forms prueba</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id = "mainDiv">
+        <h1>Lista de articulos:</h1>
+            <div class="table-container">
+                <table >
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody id = "table-Articulos-body">
+                       
+                    </tbody>
+                </table>
+            </div>
+        <button id="showInsertOptions">Insertar</button>
+    </div>
+    <div id="overlayDiv">
+        <div id = "questionsContainer">
+            <!--  <form id="myForm"  > -->
+            <label for="name">Nombre:</label>
+            <input type="text" id="name" required><br><br>
+            
+            <label for="precio">Precio:</label>
+            <input type="number" min = "0" title="Introduzca solo numeros" id="precio" required><br><br>
+            
+            <button id = "submitButton" action="/submit" method="POST" type="submit">Insertar</button>
+            <button id="closeButton">cerrar</button>
+
+        </div>
+    </div>
+      
+    <script src="script.js"></script>
+</body>
+</html>
