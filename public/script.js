@@ -1,4 +1,16 @@
-//Se consigue la tabla de articulos de la interfaz
+const btnIniciarSesion = document.getElementById('iniciarSesion');
+
+btnIniciarSesion.addEventListener('click', async function(event) {
+    document.getElementById("iniciarSesionDiv").style.display = "none";
+    showInterfazUsuario();
+});
+
+function showInterfazUsuario(){
+    document.getElementById("interfazUsuario").style.display = "flex";
+}
+
+
+/*//Se consigue la tabla de articulos de la interfaz
 const items = document.getElementById("table-Articulos-body");
 //Se consigue el boton que para insertar un articulo en la base de datos
 const form = document.getElementById('submitButton');
@@ -68,7 +80,7 @@ async function fetchItems() {
 /*
 El codigo de abajo es para mostrar en la interfaz las entradas
 Para que el ususario digite el nombre y el precio del item que desea insertar
-*/
+
 const showButton = document.getElementById('showInsertOptions');
 const overlayDiv = document.getElementById('overlayDiv');
 const closeButton = document.getElementById('closeButton');
@@ -84,5 +96,5 @@ closeButton.addEventListener('click', function() {
   overlayDiv.style.display = 'none'; // 
 });
 
-
-fetchItems();
+*/
+//fetchItems();

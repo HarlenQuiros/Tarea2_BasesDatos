@@ -5,39 +5,60 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id = "mainDiv">
-        <h1>Lista de articulos:</h1>
-            <div class="table-container">
-                <table >
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            <th>Precio</th>
-                        </tr>
-                    </thead>
-                    <tbody id = "table-Articulos-body">
-                       
-                    </tbody>
-                </table>
-            </div>
-        <button id="showInsertOptions">Insertar</button>
-    </div>
-    <div id="overlayDiv">
-        <div id = "questionsContainer">
+    <div id="iniciarSesionDiv">
+        <div id = "iniciarSesionContainer">
             <!--  <form id="myForm"  > -->
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" required><br><br>
-            
-            <label for="precio">Precio:</label>
-            <input type="number" min = "0" title="Introduzca solo numeros" id="precio" required><br><br>
-            
-            <button id = "submitButton" action="/submit" method="POST" type="submit">Insertar</button>
-            <button id="closeButton">cerrar</button>
-
+            <label for="usuario">Usuario:</label>
+            <input type="text" id="usuario" required><br><br>
+            <label for="contraseña">Contraseña:</label>
+            <input type="text" id="contraseña" required><br><br>            
+            <button id = "iniciarSesion" action="/iniciarSesion" method="POST">Iniciar sesion</button>
         </div>
     </div>
-      
+    <div id = "interfazUsuario">
+        <div id = "actionsContainer">
+            
+            
+            <div id = "filtrarContainer">
+                <label>Filtros: </label>
+                <select name = "filtros">
+                    <option>Nombre</option>
+                    <option>Cantidad</option>
+                    <option>Clase</option>
+                </select>
+                <label class = "cantidadFiltro">Cantidad:</label>
+                <input type="number" class="cantidadFiltro"><br><br>      
+                <label class = "nombreFiltro">Nombre:</label>
+                <input type="text" class="nombreFiltro"><br><br>      
+                <label class = "claseFiltro">Clases: </label>
+                <select class = "claseFiltro" name = "clases">
+                    <option>A</option>
+                    <option>B</option>
+                    <option>C</option>
+                </select>
+
+                <button id = "filtrar" >Filtrar</button>
+            </div>
+            <div class="table-container"> 
+                <table > 
+                    <thead> 
+                        <tr> 
+                            <th>Codigo</th> 
+                            <th>Nombre</th> 
+                            <th>Clase</th> 
+                            <th>Precio</th> 
+                        </tr> 
+                    </thead> 
+                    <tbody id = "table-Articulos-body">
+                    </tbody> 
+                </table> 
+            </div> 
+            <button id = "insertarArticulo" >Insertar</button>
+            <button id = "modificarArticulo" >Modificar</button>
+            <button id = "borrarArticulo" >Borrar</button>
+            <button id = "salir" >Salir</button>
+        </div>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
