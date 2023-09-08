@@ -1,0 +1,33 @@
+<Usuarios>
+    <usuario Nombre="PRojas" Password="Mipass123*"/>
+    <usuario Nombre="LPerez" Password="Nadie124**"/>
+    <usuario Nombre="AVindas" Password="adiVINE12&"/>
+    <usuario Nombre="JRamirez" Password="Mefui44"/>
+</Usuarios>
+
+<ClasesdeArticulos>
+    <ClasesdeArticulos Nombre="Plomeria"/>
+    <ClasesdeArticulos Nombre="Electricos"/>
+    <ClasesdeArticulos Nombre="Ebanisteria"/>
+    <ClasesdeArticulos Nombre="Bebidas"/>
+    <ClasesdeArticulos Nombre="Ropa"/>
+    <ClasesdeArticulos Nombre="Ferreteria"/>
+</ClasesdeArticulos>
+
+<Articulos>
+    <Articulo Codigo="34A67E" Nombre="Tachuela" ClaseArticulo="Ebanisteria" Precio="100.00"/>
+    <Articulo Codigo="45X89E" Nombre="Bombillo" ClaseArticulo="Electricos" Precio="350.00"/>
+    <Articulo Codigo="93P97X" Nombre="Tubo PVC" ClaseArticulo="Plomeria" Precio="500.20"/>
+    <Articulo Codigo="12B34C" Nombre="Martillo" ClaseArticulo="Ferreteria" Precio="25.50"/>
+    <Articulo Codigo="67T89D" Nombre="Pintura" ClaseArticulo="Ferreteria" Precio="15.99"/>
+    <Articulo Codigo="28H65A" Nombre="Silla" ClaseArticulo="Ebanisteria" Precio="75.00"/>
+    <Articulo Codigo="34L12P" Nombre="Tornillo" ClaseArticulo="Ferreteria" Precio="0.50"/>
+    <Articulo Codigo="77W23Y" Nombre="Pelota" ClaseArticulo="Deportes" Precio="5.99"/>
+    <Articulo Codigo="65G89T" Nombre="Gafas de Sol" ClaseArticulo="Ropa" Precio="30.50"/>
+    <Articulo Codigo="45D12E" Nombre="Pantalon" ClaseArticulo="Ropa" Precio="50.00"/>
+    <Articulo Codigo="78V34F" Nombre="Botas" ClaseArticulo="Ropa" Precio="80.25"/>
+    <Articulo Codigo="32R12X" Nombre="Cámara" ClaseArticulo="Electricos" Precio="299.00"/>
+    <Articulo Codigo="69T45L" Nombre="Teclado" ClaseArticulo="Electricos" Precio="12.99"/>
+    <Articulo Codigo="87Q12W" Nombre="Bicicleta" ClaseArticulo="Deportes" Precio="199.99"/>
+
+</Articulos>
