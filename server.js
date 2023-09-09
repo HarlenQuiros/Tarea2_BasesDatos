@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 app.get('/Articulo', async (req, res) => {
     try {
         await sql.connect(config);
-        const result = await sql.query('EXEC GetArticulos');
+        const result = await sql.query("EXEC GetArticulos @outResultCode = 0");
         res.json(result.recordset);
     } catch (error) {
         console.error(error);
@@ -34,30 +34,32 @@ app.get('/Articulo', async (req, res) => {
     }
 });
 
-
-
-
-app.post('/submit', async (req, res) => {//req = request, res = response
-    try {
-        const { name, precio } = req.body;        
-        if(!(name === "" | precio === "")){
+app.post('/submit', async (req, res) => {
+    try {        
+        await sql.connect(config);
+        const { name, password } = req.body;
+        if(!(name === "" | password === "")){
             await sql.connect(config);
             const request = new sql.Request();
-            request.input('InNombre', sql.VarChar(128),name);
-            request.input('InPrecio', sql.Money, precio);
-            const result = await request.execute('InsertarArticulo');
-            if(result.returnValue === 0)
-                res.status(200).send('Se inserto el articulo con exito');
+            request.output('outResultCode', sql.Int);
+            request.input('InNombre', sql.VarChar(100),name);
+            request.input('InPassword', sql.VarChar(100), password);
+            const result = await request.execute('ConfirmarUsuario');
+            console.log()
+            if(result.output.outResultCode === 1)
+                res.status(200).send('User encontrao');
             else
-                res.status(500).send('Articulo repetido no se inserto');
+                res.status(500).send('User no encontrao');
+            res.json(result.recordset);
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send('Error inserting data.');
+        res.status(500).send('Error fetching data.');
     } finally {
         sql.close();
     }
 });
+
 
 const PORT = 3000;
 app.listen(PORT, () => {
