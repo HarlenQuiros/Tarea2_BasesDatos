@@ -1,7 +1,7 @@
 <Usuarios>
     <usuario Nombre="PRojas" Password="Mipass123*"/>
     <usuario Nombre="LPerez" Password="Nadie124**"/>
-    <usuario Nombre="AVindas" Password="adiVINE12&"/>
+    <usuario Nombre="AVindas" Password="adiVINE12"/>
     <usuario Nombre="JRamirez" Password="Mefui44"/>
 </Usuarios>
 
@@ -12,6 +12,7 @@
     <ClasesdeArticulos Nombre="Bebidas"/>
     <ClasesdeArticulos Nombre="Ropa"/>
     <ClasesdeArticulos Nombre="Ferreteria"/>
+    <ClasesdeArticulos Nombre="Deportes"/>
 </ClasesdeArticulos>
 
 <Articulos>
@@ -29,5 +30,4 @@
     <Articulo Codigo="32R12X" Nombre="Cámara" ClaseArticulo="Electricos" Precio="299.00"/>
     <Articulo Codigo="69T45L" Nombre="Teclado" ClaseArticulo="Electricos" Precio="12.99"/>
     <Articulo Codigo="87Q12W" Nombre="Bicicleta" ClaseArticulo="Deportes" Precio="199.99"/>
-
 </Articulos>
