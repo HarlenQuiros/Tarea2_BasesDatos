@@ -6,8 +6,62 @@ document.getElementById("insertarArticulo").addEventListener('click', async func
     document.getElementById("overlayInsertar").style.display = "flex";
 });
 
+let clasesArticulo = {}
+
+const selectedFiltro = document.getElementById('filterSelect');
+
+const items = document.getElementById("table-Articulos-body");
+
 document.getElementById("borrarArticulo").addEventListener('click', async function(event) {
     document.getElementById("overlayBorrar").style.display = "flex";
+});
+
+async function filtrar(dato,endPoint){
+    data = {dato};
+    response = await fetch(endPoint, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        while (items.firstChild) {
+            items.removeChild(items.firstChild);
+        }
+        fetchItems(data);
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    
+}
+
+
+document.getElementById("filtrar").addEventListener('click', async function(event) {
+    const selectedOption = selectedFiltro.value;
+    let data;
+    let response;
+    switch(selectedOption){
+        case "Nombre":
+            const combinacion = document.getElementById("nombreFiltroInput").value;
+            await filtrar(combinacion,'/ArticulosFiltradoNombre')
+            break;
+        case "Clase":
+            document.getElementById('claseFiltro').style.display = "flex";
+            const selectedClase = clasesArticulo[document.getElementById("claseFiltroSelect").value];
+            filtrar(selectedClase,'/ArticulosFiltradoClase')
+            break;
+        case "Cantidad":
+            document.getElementById('cantidadFiltro').style.display = "flex";
+            break;
+    }
 });
 
 document.getElementById("modificarArticulo").addEventListener('click', async function(event) {
@@ -35,15 +89,16 @@ document.getElementById("salir").addEventListener('click', async function(event)
 const botonesCancelar = document.getElementsByClassName("cancelar")
 for (let i = 0; i < botonesCancelar.length; i++) {
     botonesCancelar[i].addEventListener('click', async function(event) {
-        const overlays = document.getElementsByClassName("overlay");
-        for (let i = 0; i < overlays.length; i++) {
-            overlays[i].style.display = "none";
-        }
+        hideClass("overlay");
     });
 }
-const items = document.getElementById("table-Articulos-body");
 
-
+function hideClass(className){
+    const classObjects = document.getElementsByClassName(className);
+    for (let i = 0; i < classObjects.length; i++) 
+        classObjects[i].style.display = "none";
+    
+}
 
 async function showInterfazUsuario(){
     // Obtener valores de los campos nombre y precio de entrada
@@ -70,7 +125,12 @@ async function showInterfazUsuario(){
                 }
                 document.getElementById("iniciarSesionDiv").style.display = "none";
                 document.getElementById("interfazUsuario").style.display = "flex";
-                fetchItems(); // Cargar nuevos elementos
+                let response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
+                let data = await response.json();
+                fetchItems(data); // Cargar nuevos elementos
+                response = await fetch("/ClasesArticulos")
+                data = await response.json()
+                fetchClaseArticulos(data)
                 alert('Se ha iniciado sesion'); // Mostrar mensaje de éxito
             } else {
                 console.log(response)
@@ -83,10 +143,8 @@ async function showInterfazUsuario(){
 }
 
 //Funcion que saca los datos de los articulos en el servidor y los pone en una tabla de html
-async function fetchItems() {
+async function fetchItems(data) {
     try {
-        const response = await fetch('/Articulo');//Se sacan los datos del  archivo articulo
-        const data = await response.json();//Se convierte los datos para que sean leidos en formato de un archivo .json 
         data.forEach(item => {
             const tr = document.createElement('tr');//Se crea una fila
             const td_nombre = document.createElement('td');// Se crea un espacio para almacenar datos
@@ -109,3 +167,43 @@ async function fetchItems() {
         console.error(error);
     }
 }
+
+function actualizarSelectsClases(){
+    const selectsClases = document.getElementsByClassName("clases")
+    for (let i = 0; i < selectsClases.length; i++) {
+        for(let key in clasesArticulo){
+            let clase = document.createElement("option")
+            clase.textContent = key
+            selectsClases[i].appendChild(clase)
+        }
+    }
+}
+
+async function fetchClaseArticulos(data) {
+    try {
+        data.forEach(item => {
+            clasesArticulo[item.Nombre] = item.id
+        });
+        actualizarSelectsClases()
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+selectedFiltro.addEventListener('change', function() {
+    const selectedOption = selectedFiltro.value;
+    console.log(selectedOption)
+    hideClass("filtro");
+    switch(selectedOption){
+        case "Nombre":
+            document.getElementById('nombreFiltro').style.display = "flex";
+            break;
+        case "Clase":
+            document.getElementById('claseFiltro').style.display = "flex";
+            break;
+        case "Cantidad":
+            document.getElementById('cantidadFiltro').style.display = "flex";
+            break;
+    }
+});

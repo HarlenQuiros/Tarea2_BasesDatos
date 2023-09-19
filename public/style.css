@@ -27,14 +27,15 @@ body {
   padding: 20px;
   align-items: center;
   margin: auto;
-  display: block;
+  display: flex;
+  flex-direction: column;
   height: 20%;
   flex-direction: column;
   width: 50%;
 }
 
 #filtrarContainer button{
-  margin-top: none;
+  margin-top: 10px;
 }
 
 #interfazUsuario{
@@ -70,16 +71,9 @@ body {
   border: 10px solid #000000;
 }
 
-.cantidadFiltro{
+.filtro{
   display: none;
-}
-
-.nombreFiltro{
-  display: none;
-}
-
-.claseFiltro{
-  display: none;
+  margin: 10px;
 }
 
 .table-container {
