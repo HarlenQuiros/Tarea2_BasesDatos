@@ -18,21 +18,24 @@
         <div id = "actionsContainer">
             <div id = "filtrarContainer">
                 <label>Filtros: </label>
-                <select name = "filtros">
+                <select id = "filterSelect">
                     <option>Nombre</option>
                     <option>Cantidad</option>
                     <option>Clase</option>
                 </select>
-                <label class = "cantidadFiltro">Cantidad:</label>
-                <input type="number" class="cantidadFiltro"><br><br>      
-                <label class = "nombreFiltro">Nombre:</label>
-                <input type="text" class="nombreFiltro"><br><br>      
-                <label class = "claseFiltro">Clases: </label>
-                <select class = "claseFiltro" name = "clases">
-                    <option>A</option>
-                    <option>B</option>
-                    <option>C</option>
-                </select>
+                <div class = "filtro" id = "cantidadFiltro">
+                    <label>Cantidad:</label>
+                    <input id = "cantidadFiltroInput" type="number"><br><br> 
+                </div>
+                <div class = "filtro" id = "nombreFiltro">
+                    <label>Nombre:</label>
+                    <input id = "nombreFiltroInput" type="text" ><br><br>
+                </div>
+                <div class = "filtro" id = "claseFiltro">
+                    <label>Clases: </label>
+                    <select class = "clases" id = "claseFiltroSelect">
+                    </select>
+                </div>
                 <button id = "filtrar" >Filtrar</button>
             </div>
             <div class="table-container"> 
@@ -63,11 +66,8 @@
             <input type="text" id="nombreInsertar" required><br><br>
             <label>Precio:</label>
             <input min = "0" type="number" id="PrecioInsertar" required><br><br>       
-            <label class = "clases">Clase: </label>
-            <select>
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
+            <label>Clase: </label>
+            <select class = "clases">
             </select>
             <div class = "buttons">
                 <button class = "cancelar">Cancelar</button>
@@ -103,11 +103,8 @@
             <input type="text" id="nombreModificarEncontrado" required><br><br>
             <label>Precio:</label>
             <input min = "0" type="number" id="PrecioModificarEncontrado" required><br><br>       
-            <label class = "clases">Clase: </label>
-            <select>
-                <option>A</option>
-                <option>B</option>
-                <option>C</option>
+            <label>Clase: </label>
+            <select class = "clases">
             </select>
             <div class = "buttons">
                 <button class = "cancelar">Cancelar</button>
