@@ -51,8 +51,10 @@ app.get('/ClasesArticulos', async (req, res) => {
 app.post('/ArticulosFiltradoNombre', async (req, res) => {
     try {
         await sql.connect(config);
-        const {dato}= req.body;
+        const {dato, usuario}= req.body;
         const request = new sql.Request();
+        request.input('InNombre', sql.VarChar(100),usuario);
+        request.input('InIp', sql.VarChar(20),req.connection.remoteAddress);
         request.output('outResultCode', sql.Int);
         request.input('InCombinacion',  sql.VarChar(100), dato);
         const result = await request.execute("GetArticulosFiltradosNombre");
@@ -65,11 +67,32 @@ app.post('/ArticulosFiltradoNombre', async (req, res) => {
     }
 });
 
+app.post('/ArticulosFiltradoCantidad', async (req, res) => {
+    try {
+        await sql.connect(config);
+        const {dato,usuario}= req.body;
+        const request = new sql.Request();
+        request.input('InNombre', sql.VarChar(100),usuario);
+        request.input('InIp', sql.VarChar(20),req.connection.remoteAddress);
+        request.output('outResultCode', sql.Int);
+        request.input('InCantidad',  sql.VarChar(100), dato);
+        const result = await request.execute("GetArticulosFiltradosCantidad");
+        res.json(result.recordset);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data.');
+    } finally {
+        sql.close();
+    }
+});
+
 app.post('/ArticulosFiltradoClase', async (req, res) => {
     try {
         await sql.connect(config);
-        const {dato}= req.body;
+        const {dato, usuario}= req.body;
         const request = new sql.Request();
+        request.input('InNombre', sql.VarChar(100),usuario);
+        request.input('InIp', sql.VarChar(20),req.connection.remoteAddress);
         request.output('outResultCode', sql.Int);
         request.input('InIdClase',  sql.Int, dato);
         const result = await request.execute("GetArticulosFiltradosClase");

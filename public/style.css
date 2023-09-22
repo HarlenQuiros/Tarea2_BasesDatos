@@ -23,6 +23,10 @@ body {
   padding: 0;
 }
 
+#nombreFiltro{
+  display: flex;
+}
+
 #filtrarContainer{
   padding: 20px;
   align-items: center;
