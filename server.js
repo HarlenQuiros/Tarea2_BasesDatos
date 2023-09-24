@@ -47,6 +47,22 @@ app.get('/ClasesArticulos', async (req, res) => {
     }
 });
 
+app.post('/Articulo', async (req, res) => {
+    try {
+        await sql.connect(config);
+        const {codigo}= req.body;
+        const request = new sql.Request();
+        request.input('InCodigo', sql.VarChar(100),codigo);
+        request.output('outResultCode', sql.Int);
+        const result = await request.execute("GetArticuloxClave");
+        res.json(result.recordset);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data.');
+    } finally {
+        sql.close();
+    }
+});
 
 app.post('/ArticulosFiltradoNombre', async (req, res) => {
     try {

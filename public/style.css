@@ -136,6 +136,11 @@ tbody {
   align-items:center;
 }
 
+.overlay label{
+  font-weight: bold;
+  font-size: large;
+}
+
 .overlayBox{
   top: 10;
   left: 10;

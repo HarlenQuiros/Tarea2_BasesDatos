@@ -94,7 +94,6 @@ async function showInterfazUsuario(){
                 response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
                 data = await response.json();
                 fetchItems(data); // Cargar nuevos elementos
-                alert('Se ha iniciado sesion'); // Mostrar mensaje de éxito
             } else {
                 console.log(response)
                 alert('Usuario no existe'); // Mostrar mensaje de error
@@ -136,12 +135,39 @@ function actualizarSelectsClases(){
     for (let i = 0; i < selectsClases.length; i++) {
         for(let key in CLASES_ARTICULO){
             let clase = document.createElement("option")
+            clase.value = CLASES_ARTICULO[key]
             clase.textContent = CLASES_ARTICULO[key]
             selectsClases[i].appendChild(clase)
         }
     }
 }
 
+
+async function GetArticuloxCodigo(codigo){
+    const data = {codigo}
+    response = await fetch('/Articulo', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    console.log(response[0])
+    if(response.length === 0){//NO existe el articulo con tal codigo 
+        return null
+    }else{
+        return response[0]
+    }
+}
 
 selectedFiltro.addEventListener('change', function() {
     const selectedOption = selectedFiltro.value;
@@ -198,12 +224,41 @@ document.getElementById("modificarArticulo").addEventListener('click', async fun
 });
 
 document.getElementById("buscarBorrar").addEventListener('click', async function(event) {
-    //only if el articulo se en encontro
-    document.getElementById("overlayBorrarEncontrado").style.display = "flex";
-    document.getElementById("overlayBorrar").style.display = "none";
+    const codigo = document.getElementById("codigoBorrar").value;
+    if(codigo.length === 0)
+        return;
+    let articulo = await GetArticuloxCodigo(codigo)
+    if(articulo === null)
+        return;
+    else{
+        console.log(articulo)
+        document.getElementById("codigoBorrarEncontrado").textContent = articulo.Codigo
+        document.getElementById("nombreBorrarEncontrado").textContent = articulo.Nombre
+        document.getElementById("precioBorrarEncontrado").textContent = articulo.Precio
+        document.getElementById("claseBorrarEncontrado").textContent = CLASES_ARTICULO[articulo.IdClaseArticulo]
+
+        document.getElementById("overlayBorrarEncontrado").style.display = "flex";
+        document.getElementById("overlayBorrar").style.display = "none";
+    }
 });
 
 document.getElementById("buscarModificar").addEventListener('click', async function(event) {
+    const codigo = document.getElementById("codigoModificar").value;
+    if(codigo.length === 0)
+        return;
+    let articulo = await GetArticuloxCodigo(codigo)
+    if(articulo === null)
+        return;
+    else{
+        console.log(articulo)
+        document.getElementById("codigoModificarEncontrado").value = articulo.Codigo
+        document.getElementById("nombreModificarEncontrado").value = articulo.Nombre
+        document.getElementById("precioModificarEncontrado").value = articulo.Precio
+        document.getElementById("claseModificarEncontrado").value = CLASES_ARTICULO[articulo.IdClaseArticulo]
+
+        document.getElementById("overlayModificarEncontrado").style.display = "flex";
+        document.getElementById("overlayModificar").style.display = "none";
+    }
     //only if el articulo se en encontro
     document.getElementById("overlayModificarEncontrado").style.display = "flex";
     document.getElementById("overlayModificar").style.display = "none";
