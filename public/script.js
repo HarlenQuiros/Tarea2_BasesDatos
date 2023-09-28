@@ -91,6 +91,7 @@ async function showInterfazUsuario(){
                 let response = await fetch("/ClasesArticulos")
                 let data = await response.json()
                 await fetchClaseArticulos(data)
+                //Para actualizar los articulos y que desaparezca el borrado
                 response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
                 data = await response.json();
                 fetchItems(data); // Cargar nuevos elementos
@@ -163,6 +164,7 @@ async function GetArticuloxCodigo(codigo){
     });
     console.log(response[0])
     if(response.length === 0){//NO existe el articulo con tal codigo 
+        alert('Articulo no existe');
         return null
     }else{
         return response[0]
@@ -192,6 +194,7 @@ function getClassId(nombreClase){
         if(CLASES_ARTICULO[key] === nombreClase)
             return key;
     }
+    return ""
 }
 
 async function fetchClaseArticulos(data) {
@@ -228,8 +231,10 @@ document.getElementById("buscarBorrar").addEventListener('click', async function
     if(codigo.length === 0)
         return;
     let articulo = await GetArticuloxCodigo(codigo)
-    if(articulo === null)
+    if(articulo === null){
+        alert('Articulo no existe');
         return;
+    }
     else{
         console.log(articulo)
         document.getElementById("codigoBorrarEncontrado").textContent = articulo.Codigo
@@ -247,8 +252,10 @@ document.getElementById("buscarModificar").addEventListener('click', async funct
     if(codigo.length === 0)
         return;
     let articulo = await GetArticuloxCodigo(codigo)
-    if(articulo === null)
+    if(articulo === null){
+        alert('Articulo no existe');
         return;
+    }
     else{
         console.log(articulo)
         document.getElementById("codigoModificarEncontrado").value = articulo.Codigo
@@ -258,15 +265,34 @@ document.getElementById("buscarModificar").addEventListener('click', async funct
 
         document.getElementById("overlayModificarEncontrado").style.display = "flex";
         document.getElementById("overlayModificar").style.display = "none";
+        //only if el articulo se en encontro
+        document.getElementById("overlayModificarEncontrado").style.display = "flex";
+        document.getElementById("overlayModificar").style.display = "none";
     }
-    //only if el articulo se en encontro
-    document.getElementById("overlayModificarEncontrado").style.display = "flex";
-    document.getElementById("overlayModificar").style.display = "none";
 });
 
 document.getElementById("salir").addEventListener('click', async function(event) {
-    document.getElementById("interfazUsuario").style.display = "none";
-    document.getElementById("iniciarSesionDiv").style.display = "flex";
+
+    const nombre = USUARIO.name
+    const data = {nombre}
+    const response = await fetch('/LogOut', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+    // Si la solicitud es exitosa
+    if (response.ok) {
+        document.getElementById("usuario").value = ""
+        document.getElementById("contraseña").value = ""
+        USUARIO.name = ""
+        document.getElementById("interfazUsuario").style.display = "none";
+        document.getElementById("iniciarSesionDiv").style.display = "flex";
+    } else {
+        console.log(response)
+        alert('Usuario no existe'); // Mostrar mensaje de error
+    }
 });
 
 document.getElementById("insertarArticulo").addEventListener('click', async function(event) {
