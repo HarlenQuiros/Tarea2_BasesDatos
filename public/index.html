@@ -65,13 +65,13 @@
             <label>Nombre:</label>
             <input type="text" id="nombreInsertar" required><br><br>
             <label>Precio:</label>
-            <input min = "0" type="number" id="PrecioInsertar" required><br><br>       
+            <input min = "0" type="number" id="precioInsertar" required><br><br>       
             <label>Clase: </label>
-            <select class = "clases">
+            <select class = "clases" id="claseFiltroInsertar">
             </select>
             <div class = "buttons">
                 <button class = "cancelar">Cancelar</button>
-                <button id = "insertar" action="/submit" method="POST">Insertar</button>
+                <button id = "insertar" >Insertar</button>
             </div>
         </div>
     </div>
@@ -107,7 +107,7 @@
             <select class = "clases" id = "claseModificarEncontrado">
             </select>
             <div class = "buttons">
-                <button class = "cancelar">Cancelar</button>
+                <button class = "cancelar" id="modificarCancelar">Cancelar</button>
                 <button id = "modificar">Modificar</button>
             </div>
         </div>

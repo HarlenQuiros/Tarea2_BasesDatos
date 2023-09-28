@@ -67,6 +67,53 @@ app.post('/Delete', async (req, res) => {
     }
 });
 
+app.post('/Insertar', async (req, res) => {
+    try {
+        await sql.connect(config);
+        const {codigo, selectedClase, nombre, precio, nombreUsuario}= req.body;
+        const request = new sql.Request();
+        request.input('InCodigo', sql.VarChar(32),codigo);
+        request.input('InClase', sql.Int,selectedClase);
+        request.input('InNombre', sql.VarChar(64), nombre);
+        request.input('InPrecio', sql.Money,precio);
+        request.input('inNombreUser',  sql.VarChar(16), nombreUsuario);
+        request.input('inPostIP', sql.VarChar(20),req.connection.remoteAddress);
+        request.output('outResultCode', sql.Int);
+        const result = await request.execute("InsertarArticulo");
+        res.json(result.recordset);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data.');
+    } finally {
+        sql.close();
+    }
+});
+
+app.post('/Modificar', async (req, res) => {
+    try {
+        await sql.connect(config);
+        const {codigoViejo, codigoNuevo, inConfirmacion, selectedClase, nombre, precio, nombreUsuario}= req.body;
+        const request = new sql.Request();
+        request.input('InCodigoViejo', sql.VarChar(32),codigoViejo);
+        request.input('InCodigoNuevo', sql.VarChar(32),codigoNuevo);
+        request.input('inConfirmacion', sql.Int,inConfirmacion);
+        request.input('InClase', sql.Int,selectedClase);
+        request.input('InNombre', sql.VarChar(64), nombre);
+        request.input('InPrecio', sql.Money,precio);
+        request.input('inNombreUser',  sql.VarChar(16), nombreUsuario);
+        request.input('inPostIP', sql.VarChar(20),req.connection.remoteAddress);
+        request.output('outResultCode', sql.Int);
+        const result = await request.execute("ModificarArticulo");
+        res.json(result.recordset);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data.');
+    } finally {
+        sql.close();
+    }
+});
+
+
 app.post('/Articulo', async (req, res) => {
     try {
         await sql.connect(config);

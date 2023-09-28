@@ -3,6 +3,17 @@ let USUARIO = {"Nombre": ""}
 const ITEMS = document.getElementById("table-Articulos-body");
 const selectedFiltro = document.getElementById('filterSelect');
 
+function Alertas(Salida){
+    if (Salida==0)
+        alert("Transacción exitosa");
+    if (Salida==5010)
+        alert("Error, nombre se encuentra duplicado");
+    if (Salida==5011)
+        alert("Error, codigo se encuentra duplicado");
+    if (Salida==5020)
+        alert("Error, articulo no existe");
+};
+
 document.getElementById("filtrar").addEventListener('click', async function(event) {
     const selectedOption = selectedFiltro.value;
     switch(selectedOption){
@@ -53,8 +64,7 @@ async function filtrar(dato, usuario, endPoint){
     })
     .catch(error => {
         console.error('Fetch error:', error);
-    });
-    
+    });   
 }
 
 
@@ -104,6 +114,7 @@ async function showInterfazUsuario(){
     }  
 }
 
+let codigoViejo
 //Funcion que saca los datos de los articulos en el servidor y los pone en una tabla de html
 async function fetchItems(data) {
     try {
@@ -255,9 +266,7 @@ document.getElementById("buscarModificar").addEventListener('click', async funct
         document.getElementById("nombreModificarEncontrado").value = articulo.Nombre
         document.getElementById("precioModificarEncontrado").value = articulo.Precio
         document.getElementById("claseModificarEncontrado").value = CLASES_ARTICULO[articulo.IdClaseArticulo]
-
-        document.getElementById("overlayModificarEncontrado").style.display = "flex";
-        document.getElementById("overlayModificar").style.display = "none";
+        codigoViejo= document.getElementById("codigoModificarEncontrado").value
     }
     //only if el articulo se en encontro
     document.getElementById("overlayModificarEncontrado").style.display = "flex";
@@ -278,9 +287,38 @@ document.getElementById("borrarArticulo").addEventListener('click', async functi
 });
 
 document.getElementById('borrar').addEventListener('click', async function(event) {
-    await showInterfazUsuario();
     const codigo = document.getElementById('codigoBorrarEncontrado').textContent;
     const inConfirmacion = 1;
+    const nombreUsuario = USUARIO.name
+    const data = {codigo, inConfirmacion, nombreUsuario}
+    response = await fetch('/Delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        Alertas(data[0][""])
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
+    const articulos = await response.json();
+    fetchItems(articulos);
+    document.getElementById("overlayBorrarEncontrado").style.display = "none";
+});
+
+document.getElementById('botonBorrarCancelar').addEventListener('click', async function(event) {
+    const codigo = document.getElementById('codigoBorrarEncontrado').textContent;
+    const inConfirmacion = 0;
     const nombreUsuario = USUARIO.name
     const data = {codigo, inConfirmacion, nombreUsuario}
     response = await fetch('/Delete', {
@@ -302,13 +340,82 @@ document.getElementById('borrar').addEventListener('click', async function(event
     document.getElementById("overlayBorrarEncontrado").style.display = "none";
 });
 
-document.getElementById('botonBorrarCancelar').addEventListener('click', async function(event) {
-    await showInterfazUsuario();
-    const codigo = document.getElementById('codigoBorrarEncontrado').textContent;
-    const inConfirmacion = 0;
+document.getElementById('insertar').addEventListener('click', async function(event) {
+    const codigo = document.getElementById('codigoInsertar').value;
+    const selectedClase = getClassId(document.getElementById("claseFiltroInsertar").value);
+    const nombre = document.getElementById('nombreInsertar').value;
+    const precio= document.getElementById('precioInsertar').value;
     const nombreUsuario = USUARIO.name
-    const data = {codigo, inConfirmacion, nombreUsuario}
-    response = await fetch('/Delete', {
+    const data = {codigo, selectedClase, nombre, precio, nombreUsuario}
+    response = await fetch('/Insertar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+        
+    })
+    .then(data => {
+        Alertas(data[0][""])
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
+    const articulos = await response.json();
+    fetchItems(articulos);
+    document.getElementById("overlayInsertar").style.display = "none";
+});
+
+
+document.getElementById('modificar').addEventListener('click', async function(event) {
+    const codigoNuevo = document.getElementById('codigoModificarEncontrado').value;
+    const inConfirmacion = 1;
+    const selectedClase = getClassId(document.getElementById("claseModificarEncontrado").value);
+    const nombre = document.getElementById('nombreModificarEncontrado').value;
+    const precio= document.getElementById('precioModificarEncontrado').value;
+    const nombreUsuario = USUARIO.name
+    const data = {codigoViejo, codigoNuevo, inConfirmacion, selectedClase, nombre, precio, nombreUsuario}
+    response = await fetch('/Modificar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        Alertas(data[0][""])
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
+    const articulos = await response.json();
+    fetchItems(articulos);
+    document.getElementById("overlayModificarEncontrado").style.display = "none";
+});
+
+document.getElementById('modificarCancelar').addEventListener('click', async function(event) {
+    const codigoNuevo = document.getElementById('codigoModificarEncontrado').value;
+    const inConfirmacion = 0;
+    const selectedClase = getClassId(document.getElementById("claseModificarEncontrado").value);
+    const nombre = document.getElementById('nombreModificarEncontrado').value;
+    const precio= document.getElementById('precioModificarEncontrado').value;
+    const nombreUsuario = USUARIO.name
+    const data = {codigoViejo, codigoNuevo, inConfirmacion, selectedClase, nombre, precio, nombreUsuario}
+    response = await fetch('/Modificar', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -324,4 +431,5 @@ document.getElementById('botonBorrarCancelar').addEventListener('click', async f
     .catch(error => {
         console.error('Fetch error:', error);
     });
+    document.getElementById("overlayModificarEncontrado").style.display = "none";
 });
