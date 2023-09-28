@@ -6,7 +6,7 @@ const config = {
     server: 'mssql-138899-0.cloudclusters.net',
     database: 'base_db',
     user: 'admin',
-    password: '@CAqg2000.',
+    password: '@HDqg2000.',
     port: 17962,
     options: {
         encrypt: true, // For secure connection
@@ -38,6 +38,26 @@ app.get('/ClasesArticulos', async (req, res) => {
     try {
         await sql.connect(config);
         const result = await sql.query("EXEC GetClasesArticulos @outResultCode = 0");
+        res.json(result.recordset);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data.');
+    } finally {
+        sql.close();
+    }
+});
+
+app.post('/Delete', async (req, res) => {
+    try {
+        await sql.connect(config);
+        const {codigo, InConfirmacion, nombreUsuario}= req.body;
+        const request = new sql.Request();
+        request.input('InCodigoArticulo', sql.VarChar(100),codigo);
+        request.input('inConfirmacion', sql.Int,InConfirmacion);
+        request.input('inPostIP', sql.VarChar(20),req.connection.remoteAddress);
+        request.output('outResultCode', sql.Int);
+        request.input('inNombre',  sql.VarChar(16), nombreUsuario);
+        const result = await request.execute("DeleteArticulo");
         res.json(result.recordset);
     } catch (error) {
         console.error(error);

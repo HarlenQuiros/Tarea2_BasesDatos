@@ -276,3 +276,52 @@ document.getElementById("insertarArticulo").addEventListener('click', async func
 document.getElementById("borrarArticulo").addEventListener('click', async function(event) {
     document.getElementById("overlayBorrar").style.display = "flex";
 });
+
+document.getElementById('borrar').addEventListener('click', async function(event) {
+    await showInterfazUsuario();
+    const codigo = document.getElementById('codigoBorrarEncontrado').textContent;
+    const inConfirmacion = 1;
+    const nombreUsuario = USUARIO.name
+    const data = {codigo, inConfirmacion, nombreUsuario}
+    response = await fetch('/Delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+    document.getElementById("overlayBorrarEncontrado").style.display = "none";
+});
+
+document.getElementById('botonBorrarCancelar').addEventListener('click', async function(event) {
+    await showInterfazUsuario();
+    const codigo = document.getElementById('codigoBorrarEncontrado').textContent;
+    const inConfirmacion = 0;
+    const nombreUsuario = USUARIO.name
+    const data = {codigo, inConfirmacion, nombreUsuario}
+    response = await fetch('/Delete', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
+});

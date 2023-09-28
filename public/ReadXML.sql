@@ -18,7 +18,7 @@ DECLARE @xmlData XML;
 
 SET @xmlData = (
 		SELECT *
-		FROM OPENROWSET(BULK '/cloudclusters/files/datos.xml', SINGLE_BLOB) 
+		FROM OPENROWSET(BULK '/cloudclusters/files/DatosDe@daTarea232.xml', SINGLE_BLOB) 
 		AS xmlData
 		);
 
@@ -26,36 +26,28 @@ INSERT INTO Usuario(UserName, Clave)
 SELECT 
 	T.Item.value('@Nombre', 'VARCHAR(16)'),
 	T.Item.value('@Password', 'VARCHAR(16)')
-FROM @xmlData.nodes('Usuarios/usuario') as T(Item)
+FROM @xmlData.nodes('root/Usuarios/usuario') as T(Item)
 
 INSERT INTO ClaseArticulo(Nombre)
 SELECT 
 	T.Item.value('@Nombre', 'VARCHAR(64)')
-FROM @xmlData.nodes('ClasesdeArticulos/ClasesdeArticulos') as T(Item)
+FROM @xmlData.nodes('root/ClasesdeArticulos/ClasedeArticulos') as T(Item);
 
-with a as (
+WITH a AS (
 	SELECT
-		T.Item.value('@ClaseArticulo', 'VARCHAR(32)') as claseArticulo,
+		T.Item.value('@ClasedeArticulos', 'VARCHAR(32)') as claseArticulo,
 		T.Item.value('@Codigo', 'VARCHAR(32)') as codigo,
 		T.Item.value('@Nombre', 'VARCHAR(128)') as nombre,
 		T.Item.value('@Precio', 'MONEY') as precio
-		FROM @xmlData.nodes('Articulos/Articulo') as T(Item)
+		FROM @xmlData.nodes('root/Articulos/Articulo') as T(Item)
 ),
-b as (
+b AS (
 SELECT * FROM ClaseArticulo 
 )
 INSERT INTO Articulo(IdClaseArticulo, Codigo, Nombre, Precio)
-select
+SELECT
 	b.id,
 	a.codigo,
 	a.nombre,
 	a.precio	
-from a inner join b on a.claseArticulo=b.Nombre
-
-
-select
-Articulo.Codigo,
-Articulo.Nombre as nombreProducto,
-Articulo.Precio,
-ClaseArticulo.Nombre as nombreClase
-from Articulo inner join ClaseArticulo on Articulo.IdClaseArticulo = ClaseArticulo.id
+FROM a inner join b ON a.claseArticulo=b.Nombre
