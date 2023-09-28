@@ -214,6 +214,30 @@ app.post('/submit', async (req, res) => {
     }
 });
 
+
+app.post('/LogOut', async (req, res) => {
+    try {        
+        await sql.connect(config);
+        const { nombre } = req.body;
+        const request = new sql.Request();
+        request.output('outResultCode', sql.Int);
+        request.input('InNombre', sql.VarChar(100),nombre);
+        request.input('InPostIp', sql.VarChar(20),req.connection.remoteAddress);
+        const result = await request.execute('LogOut');
+        if(result.output.outResultCode !== null)
+            res.status(200).send('User encontrao');
+        else
+            res.status(500).send('User no encontrao');
+        res.json(result.recordset);
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error fetching data.');
+    } finally {
+        sql.close();
+    }
+});
+
 const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -25,7 +25,7 @@
                 </select>
                 <div class = "filtro" id = "cantidadFiltro">
                     <label>Cantidad:</label>
-                    <input id = "cantidadFiltroInput" type="number"><br><br> 
+                    <input id = "cantidadFiltroInput" type="number" min = "1"><br><br> 
                 </div>
                 <div class = "filtro" id = "nombreFiltro">
                     <label>Nombre:</label>
@@ -34,6 +34,7 @@
                 <div class = "filtro" id = "claseFiltro">
                     <label>Clases: </label>
                     <select class = "clases" id = "claseFiltroSelect">
+                        <option> </option>
                     </select>
                 </div>
                 <button id = "filtrar" >Filtrar</button>
@@ -104,7 +105,8 @@
             <label>Precio:</label>
             <input min = "0" type="number" id="precioModificarEncontrado" required><br><br>       
             <label>Clase: </label>
-            <select class = "clases" id = "claseModificarEncontrado">
+            <select id = "claseModificarEncontrado">
+                <option> </option>
             </select>
             <div class = "buttons">
                 <button class = "cancelar" id="modificarCancelar">Cancelar</button>
