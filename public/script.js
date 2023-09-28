@@ -4,13 +4,13 @@ const ITEMS = document.getElementById("table-Articulos-body");
 const selectedFiltro = document.getElementById('filterSelect');
 
 function Alertas(Salida){
-    if (Salida==0)
+    if (Salida===0)
         alert("Transacción exitosa");
-    if (Salida==5010)
+    if (Salida===50010)
         alert("Error, nombre se encuentra duplicado");
-    if (Salida==5011)
+    if (Salida===50011)
         alert("Error, codigo se encuentra duplicado");
-    if (Salida==5020)
+    if (Salida===50020)
         alert("Error, articulo no existe");
 };
 
@@ -335,10 +335,13 @@ document.getElementById('borrar').addEventListener('click', async function(event
     .catch(error => {
         console.error('Fetch error:', error);
     });
+    document.getElementById("overlayBorrarEncontrado").style.display = "none";
     response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
     const articulos = await response.json();
+    while (ITEMS.firstChild) {
+        ITEMS.removeChild(ITEMS.firstChild);
+    }
     fetchItems(articulos);
-    document.getElementById("overlayBorrarEncontrado").style.display = "none";
 });
 
 document.getElementById('botonBorrarCancelar').addEventListener('click', async function(event) {
@@ -392,10 +395,13 @@ document.getElementById('insertar').addEventListener('click', async function(eve
     .catch(error => {
         console.error('Fetch error:', error);
     });
+    document.getElementById("overlayInsertar").style.display = "none";
     response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
     const articulos = await response.json();
-    fetchItems(articulos);
-    document.getElementById("overlayInsertar").style.display = "none";
+    while (ITEMS.firstChild) {
+        ITEMS.removeChild(ITEMS.firstChild);
+    }
+    fetchItems(articulos);  
 });
 
 
@@ -421,15 +427,20 @@ document.getElementById('modificar').addEventListener('click', async function(ev
         return response.json();
     })
     .then(data => {
+        console.log(data[0])
         Alertas(data[0][""])
     })
     .catch(error => {
         console.error('Fetch error:', error);
     });
+    document.getElementById("overlayModificarEncontrado").style.display = "none";
     response = await fetch("/Articulos");//Se sacan los datos del  archivo articulo 
     const articulos = await response.json();
+    while (ITEMS.firstChild) {
+        ITEMS.removeChild(ITEMS.firstChild);
+    }
     fetchItems(articulos);
-    document.getElementById("overlayModificarEncontrado").style.display = "none";
+    
 });
 
 document.getElementById('modificarCancelar').addEventListener('click', async function(event) {
